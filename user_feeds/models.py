@@ -2,6 +2,7 @@ from authentication.models import *
 
 
 class UserFeedsModel(BaseModel):
+
     __tablename__ = 'feeds'
 
     id = db.Column(db.Integer, primary_key=True)

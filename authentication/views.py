@@ -21,8 +21,14 @@ def login_views(request):
 
     if check_password_hash(user.password, payload['password']):
         session['username'] = payload['email']
+
+        # Admin Access
+        if user.email == 'admin@gmail.com':
+            user.admin = True
+            add_data(user)
+
         token = jwt.encode(
-            {'id':user.id, 'email': user.email, 'exp': (datetime.utcnow() + timedelta(days=0, hours=24)).strftime('%Y%m%d%H%M%S')},
+            {'id': user.id, 'email': user.email, 'admin': user.admin, 'exp': (datetime.utcnow() + timedelta(days=0, hours=24)).strftime('%Y%m%d%H%M%S')},
             app.config['SECRET_KEY'])
         return make_response(jsonify({'token': token}), 201)
 
@@ -46,9 +52,14 @@ def signup_views(request):
         now = datetime.now()
         created_date = now.strftime("%d-%m-%Y %H:%M:%S")
 
-        user = AuthenticateModels(first_name=first_name, last_name=last_name, email=email,
-                                  gender=gender, dob=dob, password=generate_password_hash(password),
-                                  created_at=created_date)
+        user = AuthenticateModels()
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.gender = gender
+        user.dob = dob
+        user.password = generate_password_hash(password)
+        user.created_at = created_date
 
         if add_data(user):
             return jsonify({'message': 'Successfully Registered!!!'}), 201

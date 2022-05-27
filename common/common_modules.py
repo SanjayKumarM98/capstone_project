@@ -25,7 +25,7 @@ def before_request_func():
                 tdelta = (datetime.strptime(exp, FMT) - datetime.strptime(ct, FMT)).seconds
                 min = tdelta / 60
 
-                if min <= 0:
+                if float(min) <= float(min_time):
                     return jsonify({'message': 'Token has expired!!'}), 401
 
             else:
@@ -50,7 +50,7 @@ def update_data(obj):
         db.session.commit()
         return obj
     except Exception as e:
-        print("update_data",e)
+        print("update_data", e)
         return None
 
 
@@ -61,7 +61,7 @@ def delete_data(obj):
         db.session.commit()
         return obj
     except Exception as e:
-        print("delete_data",e)
+        print("delete_data", e)
         return None
 
 
@@ -73,7 +73,7 @@ def email_required(func):
             token = request.headers['x-access-token']
             token_decode = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
             if token_decode:
-                kwargs['email'] = token_decode['email']
+                kwargs['email'], kwargs['admin'] = token_decode['email'], token_decode['admin']
                 return func(*args, **kwargs)
             else:
                 return jsonify({'message': 'token is expired!!!'})

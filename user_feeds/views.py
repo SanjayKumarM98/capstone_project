@@ -3,7 +3,7 @@ from user_friends.models import *
 from common.common_modules import *
 
 
-def create_feed_views(request, email):
+def create_feed_views(request, email, admin):
     try:
         payload = request.json
         feeds = UserFeedsModel()
@@ -26,7 +26,7 @@ def create_feed_views(request, email):
         return jsonify({'message': 'error while creating users new feed'})
 
 
-def show_friends_feed_views(request, email):
+def show_friends_feed_views(request, email, admin):
     try:
         friends = FriendsModel.query.filter(FriendsModel.follower == email).all()
         friends_list = []
@@ -45,7 +45,7 @@ def show_friends_feed_views(request, email):
         return jsonify({'error': 'in show friends feeds!!!!'})
 
 
-def show_public_feed_views(request, email):
+def show_public_feed_views(request, email, admin):
     try:
         user = UserFeedsModel.query.filter(UserFeedsModel.visibility == 'public').all()
         public_feeds = []

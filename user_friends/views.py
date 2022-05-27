@@ -2,7 +2,7 @@ from user_friends.models import *
 from common.common_modules import *
 
 
-def follow_unfollow_views(request,email):
+def follow_unfollow_views(request, email, admin):
     try:
         payload = request.json
 

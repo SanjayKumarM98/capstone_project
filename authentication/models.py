@@ -2,6 +2,7 @@ from common.models import *
 
 
 class AuthenticateModels(BaseModel):
+
     __tablename__ = 'authenticate'
 
     id = db.Column(db.String(80), default=str(uuid.uuid4()), primary_key=True)
@@ -12,3 +13,4 @@ class AuthenticateModels(BaseModel):
     gender = db.Column(db.String(10), nullable=False)
     dob = db.Column(db.String(20), nullable=False)
     forgot_code = db.Column(db.String(20), nullable=True)
+    admin = db.Column(db.Boolean, default=False)

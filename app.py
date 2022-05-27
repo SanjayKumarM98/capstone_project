@@ -10,3 +10,4 @@ app.register_blueprint(user_friends_api_blueprint, name='user_friends_url_one', 
 
 if __name__ == '__main__':
     app.run(debug=True)
+
