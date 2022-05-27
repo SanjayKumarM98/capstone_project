@@ -37,7 +37,7 @@ def show_friends_feed_views(request, email):
         for friend in friends_list:
             friend_feed = UserFeedsModel.query.filter(UserFeedsModel.created_by == str(friend), (UserFeedsModel.visibility == 'public') | (UserFeedsModel.visibility == 'friends')).all()
             for feed in friend_feed:
-                friends_feeds.append({'title': feed.title, 'description': feed.description, 'image': feed.image, 'detail': feed.detail, 'tags': feed.tags, 'category': feed.category})
+                friends_feeds.append({'title': feed.title, 'description': feed.description, 'image': feed.image, 'detail': feed.detail, 'tags': feed.tags, 'category': feed.category, 'created_by': feed.created_by})
         return jsonify({'feeds': friends_feeds})
 
     except Exception as e:
@@ -50,7 +50,7 @@ def show_public_feed_views(request, email):
         user = UserFeedsModel.query.filter(UserFeedsModel.visibility == 'public').all()
         public_feeds = []
         for feed in user:
-            public_feeds.append({'title': feed.title, 'description': feed.description, 'image': feed.image, 'detail': feed.detail, 'tags': feed.tags, 'category': feed.category})
+            public_feeds.append({'title': feed.title, 'description': feed.description, 'image': feed.image, 'detail': feed.detail, 'tags': feed.tags, 'category': feed.category, 'created_by': feed.created_by})
         return jsonify({'feeds': public_feeds})
 
     except Exception as e:
