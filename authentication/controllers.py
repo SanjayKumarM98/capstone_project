@@ -9,6 +9,11 @@ def login_controller():
     return login_views(request)
 
 
+@authentication.route('logout', methods=['POST'])
+def logout_controller():
+    return logout_views(request)
+
+
 @authentication.route('signup', methods=['POST'])
 def signup_controller():
     return signup_views(request)

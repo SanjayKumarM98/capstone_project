@@ -20,6 +20,7 @@ def login_views(request):
         return make_response('Could Not Verify', 401, {'WWW-Authenticate': 'Basic Realm="User Does Not Exists'})
 
     if check_password_hash(user.password, payload['password']):
+        session['username'] = payload['email']
         token = jwt.encode(
             {'id':user.id, 'email': user.email, 'exp': (datetime.utcnow() + timedelta(days=0, hours=24)).strftime('%Y%m%d%H%M%S')},
             app.config['SECRET_KEY'])
@@ -91,3 +92,9 @@ def reset_password_mail_views(request):
         # Print any error messages to stdout
         print(e)
     return jsonify({'message': 'mail not sent'})
+
+
+def logout_views(request):
+    if 'username' in session:
+        session.pop('username',None)
+    return jsonify({'message': 'successfully logged out!!!'})
